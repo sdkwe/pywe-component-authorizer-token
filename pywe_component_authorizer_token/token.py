@@ -26,7 +26,7 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         # Update Params
         self.update_params(component_appid=component_appid, component_secret=component_secret, auth_code=auth_code, storage=storage)
         # Component Authorizer Token Request
-        token = component_access_token(component_appid=self.component_appid, component_secret=self.component_secret, storage=self.storage)
+        token = component_access_token(appid=self.component_appid, secret=self.component_secret, storage=self.storage)
         component_authorizer_access_info = self.post(self.WECHAT_FETCH_AUTHORIZER_TOKEN.format(component_access_token=token), data={
             'component_appid': self.component_appid,
             'authorization_code': self.auth_code,
@@ -45,7 +45,7 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         # Update Params
         self.update_params(component_appid=component_appid, component_secret=component_secret, storage=storage)
         # Component Authorizer Token Refresh Request
-        token = component_access_token(component_appid=self.component_appid, component_secret=self.component_secret, storage=self.storage)
+        token = component_access_token(appid=self.component_appid, secret=self.component_secret, storage=self.storage)
         component_authorizer_access_info = self.post(self.WECHAT_REFRESH_AUTHORIZER_TOKEN.format(component_access_token=token), data={
             'component_appid': self.component_appid,
             'authorizer_appid': authorizer_appid,
