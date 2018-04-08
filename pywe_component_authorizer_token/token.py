@@ -61,7 +61,7 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         # Return Access Token
         return component_authorizer_access_info.get('authorizer_access_token')
 
-    def authorizer_access_token(self, component_appid=None, component_secret=None, authorizer_appid=None, storage=None):
+    def get_authorizer_access_token(self, component_appid=None, component_secret=None, authorizer_appid=None, storage=None):
         # Update Params
         self.update_params(component_appid=component_appid, component_secret=component_secret, storage=storage)
         # Fetch component_authorizer_access_info
@@ -79,11 +79,11 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         return self.__refresh_authorizer_access_token(component_appid, component_secret, authorizer_appid, storage)
 
     def final_authorizer_access_token(self, cls=None, component_appid=None, component_secret=None, authorizer_access_token=None, authorizer_appid=None, storage=None):
-        return authorizer_access_token or self.authorizer_access_token(component_appid or cls.component_appid, component_secret or cls.component_secret, authorizer_appid, storage=storage or cls.storage)
+        return authorizer_access_token or self.get_authorizer_access_token(component_appid or cls.component_appid, component_secret or cls.component_secret, authorizer_appid, storage=storage or cls.storage)
 
 
 token = ComponentAuthorizerToken()
-authorizer_access_token = token.authorizer_access_token
+authorizer_access_token = token.get_authorizer_access_token
 initial_authorizer_access_token = token.initial_authorizer_access_token
 refresh_authorizer_access_token = token.refresh_authorizer_access_token
 final_authorizer_access_token = token.final_authorizer_access_token

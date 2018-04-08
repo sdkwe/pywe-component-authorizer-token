@@ -8,20 +8,20 @@ from pywe_storage import MemoryStorage, ShoveStorage
 
 
 class BaseComponentAuthorizerToken(BaseWechat):
-    def __init__(self, component_appid=None, component_secret=None, auth_code=None, authorizer_access_token=None, authorizer_refresh_token=None, storage=None):
+    def __init__(self, component_appid=None, component_secret=None, auth_code=None, auth_access_token=None, auth_refresh_token=None, storage=None):
         super(BaseComponentAuthorizerToken, self).__init__()
         self.component_appid = component_appid
         self.component_secret = component_secret
         self.auth_code = auth_code
-        self.authorizer_access_token = authorizer_access_token
-        self.authorizer_refresh_token = authorizer_refresh_token
+        self.auth_access_token = auth_access_token
+        self.auth_refresh_token = auth_refresh_token
         self.storage = storage
 
-        if self.authorizer_access_token:
+        if self.auth_access_token:
             expires_in = 7200
             component_authorizer_access_info = {
-                'authorizer_access_token': self.authorizer_access_token,
-                'authorizer_refresh_token': self.authorizer_refresh_token,
+                'authorizer_access_token': self.auth_access_token,
+                'authorizer_refresh_token': self.auth_refresh_token,
                 'expires_in': expires_in,
                 'expires_at': int(time.time()) + expires_in,
             }
@@ -30,12 +30,12 @@ class BaseComponentAuthorizerToken(BaseWechat):
     def component_authorizer_access_info_key(self, authorizer_appid=None):
         return '{0}:{1}:component:authorizer:access:info'.format(self.component_appid, authorizer_appid)
 
-    def update_params(self, component_appid=None, component_secret=None, auth_code=None, authorizer_access_token=None, authorizer_refresh_token=None, storage=None):
+    def update_params(self, component_appid=None, component_secret=None, auth_code=None, auth_access_token=None, auth_refresh_token=None, storage=None):
         self.component_appid = component_appid or self.component_appid
         self.component_secret = component_secret or self.component_secret
         self.auth_code = auth_code or self.auth_code
-        self.authorizer_access_token = authorizer_access_token or self.authorizer_access_token
-        self.authorizer_refresh_token = authorizer_refresh_token or self.authorizer_refresh_token
+        self.auth_access_token = auth_access_token or self.auth_access_token
+        self.auth_refresh_token = auth_refresh_token or self.auth_refresh_token
         self.storage = storage or self.storage
 
         if self.storage is None or isinstance(self.storage, (MemoryStorage, ShoveStorage)):
