@@ -16,8 +16,8 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         # 该API用于使用授权码换取授权公众号或小程序的授权信息，并换取authorizer_access_token和authorizer_refresh_token。 授权码的获取，需要在用户在第三方平台授权页中完成授权流程后，在回调URI中通过URL参数提供给第三方平台方。请注意，由于现在公众号或小程序可以自定义选择部分权限授权给第三方平台，因此第三方平台开发者需要通过该接口来获取公众号或小程序具体授权了哪些权限，而不是简单地认为自己声明的权限就是公众号或小程序授权的权限。
         # 5、获取（刷新）授权公众号或小程序的接口调用凭据（令牌）
         # 该API用于在授权方令牌（authorizer_access_token）失效时，可用刷新令牌（authorizer_refresh_token）获取新的令牌。请注意，此处token是2小时刷新一次，开发者需要自行进行token的缓存，避免token的获取次数达到每日的限定额度。
-        self.WECHAT_FETCH_AUTHORIZER_TOKEN = self.API_DOMAIN + '/cgi-bin/component/api_query_auth'
-        self.WECHAT_REFRESH_AUTHORIZER_TOKEN = self.API_DOMAIN + '/cgi-bin/component/api_authorizer_token'
+        self.WECHAT_FETCH_AUTHORIZER_TOKEN = self.API_DOMAIN + '/cgi-bin/component/api_query_auth?component_access_token={component_access_token}'
+        self.WECHAT_REFRESH_AUTHORIZER_TOKEN = self.API_DOMAIN + '/cgi-bin/component/api_authorizer_token?component_access_token={component_access_token}'
 
     def __about_to_expires(self, expires_at):
         return expires_at and expires_at - int(time.time()) < 60
