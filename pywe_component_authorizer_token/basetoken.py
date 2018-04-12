@@ -17,16 +17,6 @@ class BaseComponentAuthorizerToken(BaseWechat):
         self.auth_refresh_token = auth_refresh_token
         self.storage = storage
 
-        if self.auth_access_token:
-            expires_in = 7200
-            component_authorizer_access_info = {
-                'authorizer_access_token': self.auth_access_token,
-                'authorizer_refresh_token': self.auth_refresh_token,
-                'expires_in': expires_in,
-                'expires_at': int(time.time()) + expires_in,
-            }
-            self.storage.set(self.component_authorizer_access_info_key, component_authorizer_access_info, expires_in)
-
     def component_authorizer_access_info_key(self, authorizer_appid=None):
         return '{0}:{1}:component:authorizer:access:info'.format(self.component_appid, authorizer_appid)
 
