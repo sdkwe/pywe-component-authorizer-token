@@ -49,7 +49,7 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         component_authorizer_access_info = self.post(self.WECHAT_REFRESH_AUTHORIZER_TOKEN.format(component_access_token=token), data={
             'component_appid': self.component_appid,
             'authorizer_appid': authorizer_appid,
-            'authorizer_refresh_token': self.storage.get(self.component_authorizer_access_info_key(authorizer_appid=authorizer_appid)).get('authorizer_refresh_token', ''),
+            'authorizer_refresh_token': self.storage.get(self.component_authorizer_access_info_key(authorizer_appid=authorizer_appid), default={}).get('authorizer_refresh_token', ''),
         })
         # Request Error
         if 'expires_in' not in component_authorizer_access_info:
