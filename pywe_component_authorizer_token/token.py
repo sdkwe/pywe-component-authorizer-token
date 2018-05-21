@@ -22,7 +22,7 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
     def __about_to_expires(self, expires_at):
         return expires_at and expires_at - int(time.time()) < 60
 
-    def __fetch_authorizer_access_token(self, component_appid=None, component_secret=None, auth_code=None, storage=None, token_fetched_func=None, auth_token_fetched_func=None):
+    def __fetch_authorizer_access_token(self, component_appid=None, component_secret=None, auth_code=None, storage=None, token_fetched_func=None, auth_token_fetched_func=None, with_authorizer_appid=False):
         # Update Params
         self.update_params(component_appid=component_appid, component_secret=component_secret, auth_code=auth_code, storage=storage, token_fetched_func=token_fetched_func, auth_token_fetched_func=auth_token_fetched_func)
         # Component Authorizer Token Request
@@ -43,6 +43,8 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
         if auth_token_fetched_func:
             auth_token_fetched_func(self.component_appid, self.component_secret, authorizer_appid, component_authorizer_access_info)
         # Return Access Token
+        if with_authorizer_appid:
+            return component_authorizer_access_info.get('authorizer_access_token'), authorizer_appid
         return component_authorizer_access_info.get('authorizer_access_token')
 
     def __refresh_authorizer_access_token(self, component_appid=None, component_secret=None, authorizer_appid=None, storage=None, token_fetched_func=None, auth_token_fetched_func=None):
@@ -79,8 +81,8 @@ class ComponentAuthorizerToken(BaseComponentAuthorizerToken):
                 return authorizer_access_token
         return self.__refresh_authorizer_access_token(self.component_appid, self.component_secret, authorizer_appid, self.storage, token_fetched_func=self.token_fetched_func, auth_token_fetched_func=self.auth_token_fetched_func)
 
-    def initial_authorizer_access_token(self, component_appid=None, component_secret=None, auth_code=None, storage=None, token_fetched_func=None, auth_token_fetched_func=None):
-        return self.__fetch_authorizer_access_token(component_appid, component_secret, auth_code, storage, token_fetched_func=token_fetched_func, auth_token_fetched_func=auth_token_fetched_func)
+    def initial_authorizer_access_token(self, component_appid=None, component_secret=None, auth_code=None, storage=None, token_fetched_func=None, auth_token_fetched_func=None, with_authorizer_appid=False):
+        return self.__fetch_authorizer_access_token(component_appid, component_secret, auth_code, storage, token_fetched_func=token_fetched_func, auth_token_fetched_func=auth_token_fetched_func, with_authorizer_appid=with_authorizer_appid)
 
     def refresh_authorizer_access_token(self, component_appid=None, component_secret=None, authorizer_appid=None, storage=None, token_fetched_func=None, auth_token_fetched_func=None):
         return self.__refresh_authorizer_access_token(component_appid, component_secret, authorizer_appid, storage, token_fetched_func=token_fetched_func, auth_token_fetched_func=auth_token_fetched_func)
